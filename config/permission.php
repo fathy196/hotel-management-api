@@ -199,4 +199,7 @@ return [
 
         'store' => 'default',
     ],
+    'defaults' => [
+        'guard_name' => 'api', // 👈 CHANGE THIS FROM web TO api
+    ],
 ];
