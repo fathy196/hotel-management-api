@@ -18,7 +18,9 @@ return new class extends Migration {
             $table->date('check_out');
             $table->unsignedInteger('guests');
             $table->enum('status', ['pending', 'confirmed', 'checked_in', 'completed', 'cancelled'])->default('pending');
+            $table->text('special_requests')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

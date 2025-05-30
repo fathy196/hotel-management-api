@@ -15,10 +15,11 @@ return new class extends Migration {
             $table->string('room_number')->unique();
             $table->enum('type', ['single', 'double', 'suite']);
             $table->decimal('price_per_night', 10, 2);
-            $table->enum('status', ['available', 'booked', 'maintenance']);
+            $table->enum('status', ['available', 'booked', 'maintenance'])->default('available');
             $table->integer('max_occupancy');
             $table->text('description')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

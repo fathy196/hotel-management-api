@@ -2,7 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
@@ -14,10 +16,11 @@ class RolePermissionSeeder extends Seeder
     public function run(): void
     {
         // Create roles with 'api' guard
-        $admin = Role::create(['name' => 'admin', 'guard_name' => 'api']);
-        $receptionist = Role::create(['name' => 'receptionist', 'guard_name' => 'api']);
-        $customer = Role::create(['name' => 'customer', 'guard_name' => 'api']);
+        $admin = Role::firstOrCreate(['name' => 'admin', 'guard_name' => 'api']);
+        $receptionist = Role::firstOrCreate(['name' => 'receptionist', 'guard_name' => 'api']);
+        $customer = Role::firstOrCreate(['name' => 'customer', 'guard_name' => 'api']);
 
+        // Create permissions
         $permissions = [
             'manage users',
             'manage rooms',
@@ -30,15 +33,16 @@ class RolePermissionSeeder extends Seeder
         ];
 
         foreach ($permissions as $permission) {
-            Permission::create([
+            Permission::firstOrCreate([
                 'name' => $permission,
                 'guard_name' => 'api',
             ]);
         }
 
-        // Assign permissions
+        // Assign all permissions to admin
         $admin->givePermissionTo(Permission::all());
 
+        // Assign limited permissions to other roles
         $receptionist->givePermissionTo([
             'manage bookings',
             'checkin checkout',
@@ -49,5 +53,15 @@ class RolePermissionSeeder extends Seeder
             'create bookings',
             'view own bookings',
         ]);
+
+        // Create a default admin user
+        $adminUser = User::firstOrCreate([
+            'email' => 'admin@example.com',
+        ], [
+            'name' => 'Admin User',
+            'password' => Hash::make('password'), // Change this for production
+        ]);
+
+        $adminUser->assignRole('admin');
     }
 }
