@@ -24,7 +24,7 @@ Route::prefix('rooms')->group(function () {
     Route::get('/trashed', [RoomController::class, 'trashed'])->middleware(['jwt.verify', 'permission:manage rooms']);
     Route::get('/available', [RoomController::class, 'available']);
     Route::get('/{room}', [RoomController::class, 'show']);
-    
+
     // Protected routes (require JWT auth + manage rooms permission)
     Route::middleware(['jwt.verify', 'permission:manage rooms'])->group(function () {
         Route::post('/', [RoomController::class, 'store']);
@@ -34,6 +34,7 @@ Route::prefix('rooms')->group(function () {
     });
 });
 Route::middleware(['jwt.verify'])->group(function () {
+    Route::get('/bookings', [BookingController::class, 'index']);
     Route::post('/bookings', [BookingController::class, 'store']);
-    
+
 });

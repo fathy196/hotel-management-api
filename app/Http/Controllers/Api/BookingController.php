@@ -16,7 +16,11 @@ class BookingController extends Controller
     {
     }
 
-
+    public function index(Request $request)
+    {
+        $bookings = $this->bookingService->getAllBookings($request->all());
+        return ApiResponseHelper::apiResponse(true, BookingResource::collection($bookings), 'Bookings fetched successfully');
+    }
     public function store(StoreBookingRequest $request)
     {
         $room = Room::findOrFail($request->room_id);
