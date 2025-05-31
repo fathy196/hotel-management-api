@@ -41,6 +41,11 @@ class BookingService
         $data['status'] = 'pending';
         return Booking::create($data);
     }
+    public function updateBooking(Booking $booking, array $data): Booking
+    {
+        $booking->update($data);
+        return $booking->fresh();
+    }
 
     public function checkRoomAvailability(Room $room, string $checkIn, string $checkOut): bool
     {

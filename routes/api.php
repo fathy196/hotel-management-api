@@ -36,5 +36,6 @@ Route::prefix('rooms')->group(function () {
 Route::middleware(['jwt.verify'])->group(function () {
     Route::get('/bookings', [BookingController::class, 'index']);
     Route::post('/bookings', [BookingController::class, 'store']);
-
+    Route::get('/bookings/{booking}', [BookingController::class, 'show']);
+    Route::put('/bookings/{booking}', [BookingController::class, 'update']);
 });

@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\Helpers\ApiResponseHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreBookingRequest;
+use App\Http\Requests\UpdateBookingRequest;
 use App\Http\Resources\BookingResource;
+use App\Models\Booking;
 use App\Models\Room;
 use App\Services\BookingService;
 use Illuminate\Http\Request;
@@ -31,5 +33,14 @@ class BookingController extends Controller
 
         $booking = $this->bookingService->createBooking($request->validated());
         return ApiResponseHelper::apiResponse(true, new BookingResource($booking), 'Booking created successfully', 201);
+    }
+    public function show(Booking $booking)
+    {
+        return ApiResponseHelper::apiResponse(true, new BookingResource($booking->load(['room', 'user'])), 'Booking fetched successfully');
+    }
+     public function update(UpdateBookingRequest $request, Booking $booking)
+    {
+        $updatedBooking = $this->bookingService->updateBooking($booking, $request->validated());
+        return ApiResponseHelper::apiResponse(true, new BookingResource($updatedBooking), 'Booking updated successfully');
     }
 }
