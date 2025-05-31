@@ -46,6 +46,24 @@ class BookingService
         $booking->update($data);
         return $booking->fresh();
     }
+    public function deleteBooking(Booking $booking): void
+    {
+        $booking->delete();
+    }
+    public function confirmBooking(Booking $booking): Booking
+    {
+        $booking->update(['status' => 'confirmed']);
+        $booking->room->markAsBooked();
+        return $booking;
+    }
+
+    public function cancelBooking(Booking $booking): Booking
+    {
+        $booking->update(['status' => 'cancelled']);
+        $booking->room->markAsAvailable();
+        return $booking;
+    }
+
 
     public function checkRoomAvailability(Room $room, string $checkIn, string $checkOut): bool
     {

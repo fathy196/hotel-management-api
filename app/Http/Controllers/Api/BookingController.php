@@ -38,9 +38,35 @@ class BookingController extends Controller
     {
         return ApiResponseHelper::apiResponse(true, new BookingResource($booking->load(['room', 'user'])), 'Booking fetched successfully');
     }
-     public function update(UpdateBookingRequest $request, Booking $booking)
+    public function update(UpdateBookingRequest $request, Booking $booking)
     {
         $updatedBooking = $this->bookingService->updateBooking($booking, $request->validated());
         return ApiResponseHelper::apiResponse(true, new BookingResource($updatedBooking), 'Booking updated successfully');
+    }
+    public function destroy($id)
+    {
+        $booking = Booking::withTrashed()->where('id', $id)->first();
+
+        if (!$booking) {
+            return ApiResponseHelper::apiResponse(false, null, 'Booking not found', 404);
+        }
+
+        if ($booking->trashed()) {
+            return ApiResponseHelper::apiResponse(false, null, 'Booking is already deleted', 409);
+        }
+
+        $this->bookingService->deleteBooking($booking);
+        return ApiResponseHelper::apiResponse(true, null, 'Booking deleted successfully');
+    }
+    public function confirm(Booking $booking)
+    {
+        $booking = $this->bookingService->confirmBooking($booking);
+        return ApiResponseHelper::apiResponse(true, new BookingResource($booking), 'Booking confirmed successfully');
+    }
+
+    public function cancel(Booking $booking)
+    {
+        $booking = $this->bookingService->cancelBooking($booking);
+        return ApiResponseHelper::apiResponse(true, new BookingResource($booking), 'Booking cancelled successfully');
     }
 }

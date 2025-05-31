@@ -38,4 +38,7 @@ Route::middleware(['jwt.verify'])->group(function () {
     Route::post('/bookings', [BookingController::class, 'store']);
     Route::get('/bookings/{booking}', [BookingController::class, 'show']);
     Route::put('/bookings/{booking}', [BookingController::class, 'update']);
+    Route::delete('/bookings/{booking}', [BookingController::class, 'destroy']);
+    Route::post('/bookings/{booking}/confirm', [BookingController::class, 'confirm']);
+    Route::post('/bookings/{booking}/cancel', [BookingController::class, 'cancel']);
 });
