@@ -15,6 +15,7 @@ class Booking extends Model
         'check_out',
         'guests',
         'status',
+        'special_requests',
     ];
 
     protected $casts = [

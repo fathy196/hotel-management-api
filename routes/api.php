@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\BookingController;
 use App\Http\Controllers\Api\RoomController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -31,4 +32,8 @@ Route::prefix('rooms')->group(function () {
         Route::delete('/{room}', [RoomController::class, 'destroy']);
         Route::post('/{id}/restore', [RoomController::class, 'restore']);
     });
+});
+Route::middleware(['jwt.verify'])->group(function () {
+    Route::post('/bookings', [BookingController::class, 'store']);
+    
 });
