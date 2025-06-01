@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BookingController;
+use App\Http\Controllers\Api\PaymentController;
 use App\Http\Controllers\Api\RoomController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -41,4 +42,12 @@ Route::middleware(['jwt.verify'])->group(function () {
     Route::delete('/bookings/{booking}', [BookingController::class, 'destroy']);
     Route::post('/bookings/{booking}/confirm', [BookingController::class, 'confirm']);
     Route::post('/bookings/{booking}/cancel', [BookingController::class, 'cancel']);
+
+    Route::post('/bookings/{booking}/checkout', [PaymentController::class, 'createCheckout']);
+
 });
+Route::get('/payments/success/{booking}', [PaymentController::class, 'handleSuccess'])
+    ->name('payment.success');
+
+Route::get('/payments/cancel/{booking}', [PaymentController::class, 'handleCancel'])
+    ->name('payment.cancel');

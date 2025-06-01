@@ -10,7 +10,6 @@ use Spatie\Permission\Traits\HasRoles;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable implements JWTSubject
-
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable, HasRoles;
@@ -26,6 +25,9 @@ class User extends Authenticatable implements JWTSubject
         'email',
         'password',
         'phone',
+        'stripe_id',
+        'pm_type',
+        'pm_last_four'
     ];
 
     /**

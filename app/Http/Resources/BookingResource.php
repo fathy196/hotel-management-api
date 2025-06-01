@@ -26,6 +26,8 @@ class BookingResource extends JsonResource
             'special_requests' => $this->special_requests,
             'duration_nights' => $this->check_in->diffInDays($this->check_out),
             'total_price' => optional($this->room)->price_per_night * $this->check_in->diffInDays($this->check_out),
+            'payment_status' => $this->payment_status,
+            'payment_method' => $this->payment_method,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

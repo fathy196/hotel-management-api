@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Booking;
 use App\Models\Room;
+use Carbon\Carbon;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class BookingService
@@ -39,6 +40,12 @@ class BookingService
     {
         $data['user_id'] = auth()->id();
         $data['status'] = 'pending';
+        $data['total_amount'] =
+            $this->calculateBookingTotal(
+                $data['room_id'],
+                $data['check_in'],
+                $data['check_out']
+            );
         return Booking::create($data);
     }
     public function updateBooking(Booking $booking, array $data): Booking
@@ -86,5 +93,11 @@ class BookingService
             })
             ->where('status', 'confirmed') // Only check confirmed bookings
             ->exists();
+    }
+    protected function calculateBookingTotal(int $roomId, string $checkIn, string $checkOut): float
+    {
+        $room = Room::findOrFail($roomId);
+        $nights = Carbon::parse($checkIn)->diffInDays(Carbon::parse($checkOut));
+        return $nights * $room->price_per_night;
     }
 }

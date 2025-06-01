@@ -32,7 +32,15 @@ class BookingController extends Controller
         }
 
         $booking = $this->bookingService->createBooking($request->validated());
-        return ApiResponseHelper::apiResponse(true, new BookingResource($booking), 'Booking created successfully', 201);
+        return ApiResponseHelper::apiResponse(
+            true,
+            [
+                'booking' => new BookingResource($booking),
+                'payment_required' => true
+            ],
+            'Booking created successfully. Payment required to confirm.',
+            201
+        );
     }
     public function show(Booking $booking)
     {

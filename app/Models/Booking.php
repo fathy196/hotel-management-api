@@ -16,11 +16,23 @@ class Booking extends Model
         'guests',
         'status',
         'special_requests',
+        'payment_status',
+        'payment_method',
+        'payment_reference',
+        'total_amount',
+        'paid_at',
+        'refund_amount',
+        'refunded_at',
+        'refund_reason'
     ];
 
     protected $casts = [
         'check_in' => 'date',
         'check_out' => 'date',
+        'total_amount' => 'decimal:2',
+        'refund_amount' => 'decimal:2',
+        'paid_at' => 'datetime',
+        'refunded_at' => 'datetime'
     ];
 
     public function room()
